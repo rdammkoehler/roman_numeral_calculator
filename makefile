@@ -1,3 +1,5 @@
+# Setup and build
+
 CC=gcc
 CFLAGS=-Wall
 LDFLAGS=
@@ -47,7 +49,9 @@ coverage: checkmk
 	$(GCOV) convert_roman.c
 	$(GCOV) validate.c
 	$(GCOV) adjust_roman.c
-	$(GCOV) validate_rn.c  
+	$(GCOV) validate_rn.c
+	mkdir -p coverage
+	mv *.g??? coverage
 
 splint:
 	$(SPLINT) $(SPLINT_FLAGS) -I src $(SOURCES) | tee all.splint
@@ -68,3 +72,4 @@ clean:
 	rm -f test/*_tests.c
 	rm -f *.g???
 	rm -f *.splint
+	rm -Rf coverage

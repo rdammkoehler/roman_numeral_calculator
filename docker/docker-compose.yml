@@ -1,5 +1,5 @@
 stuff:
   image: rncal
   volumes:
-    - ~:/home/rich
-  working_dir: /home/rich
+    - ~:/home/rpd
+  working_dir: /home/rpd
