@@ -6,3 +6,4 @@ all_tests_gcov
 romani
 romani_valgrind
 .idea/
+coverage/

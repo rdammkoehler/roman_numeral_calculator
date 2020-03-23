@@ -22,6 +22,12 @@ GCOV=gcov
 GCOV_FLAGS=-fprofile-arcs -ftest-coverage
 GCOV_TEST_TARGET=all_tests_gcov
 
+LCOV=lcov
+LCOV_FLAGS=-c --directory coverage --output-file main_coverage.info
+
+GENHTML=genhtml
+GENHTML_FLAGS=main_coverage.info --output-directory coverage
+
 SPLINT=splint
 SPLINT_FLAGS=+unixlib -compdef -mayaliasunique -immediatetrans
 
@@ -43,6 +49,7 @@ test: checkmk
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) ./$(TEST_TARGET)
 
 coverage: checkmk
+	rm -Rf coverage
 	$(CC) $(TEST_CFLAGS) $(GCOV_FLAGS) -o $(GCOV_TEST_TARGET) $(SOURCES) $(TEST_SOURCES) $(CHKLIB) $(TEST_LIBS) -I src 
 	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) ./$(GCOV_TEST_TARGET)
 	$(GCOV) calculator.c
@@ -52,6 +59,9 @@ coverage: checkmk
 	$(GCOV) validate_rn.c
 	mkdir -p coverage
 	mv *.g??? coverage
+	$(LCOV) $(LCOV_FLAGS)
+	$(GENHTML) $(GENHTML_FLAGS)
+	rm -f main_coverage.info
 
 splint:
 	$(SPLINT) $(SPLINT_FLAGS) -I src $(SOURCES) | tee all.splint
@@ -73,3 +83,4 @@ clean:
 	rm -f *.g???
 	rm -f *.splint
 	rm -Rf coverage
+	rm -f main_coverage.info
