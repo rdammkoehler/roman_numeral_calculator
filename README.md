@@ -11,6 +11,35 @@ Everyone loves a challenge
 
 # How?
 
+## Zero to Hero
+
+Of course these instructions assume you are me and on my machine. I have this git repo cloned to `/Users/rpd/projects/NOrad/roman_numeral_calculator` If that is not where you put it, you will need to adjust the following instructions a tiny bit. ALSO, the docker user is `rich`, that's me. You can change that if you like in the Dockerfile, otherwise, just pretend you are me :-)
+
+Starting from the root of this repo;
+
+```sh
+cd docker
+docker build . | tee buildlog.txt	# copies stdout to a file for parsing when it's done
+docker tag `tail -1 buildlog.txt | awk '{print $3}'` rncal	# tag the image as rncal so it is easy to find
+rm buildlog.txt				# remove the log file, we don't need it anymore
+docker run -v ~:/home/rich --rm -it rncal bash	# run the docker image, it will delete when we exit
+export PS1='% '				# make the prompt less obnoxious
+cd /home/rich/projects/NOrad/roman_numeral_calculator	# goto the project dir (change for your system)
+make clean; make all cli		# build everything
+```
+
+Now run the command line tool to test;
+
+```
+% ./romani I II +
+% III
+% ./romani IV II -
+% II
+% 
+```
+
+## Details
+
 In order to build the code you will need to run make. Below there are some notes about about my experience. But here are the high level instructions;
 
 * Assume check is installed in the traditional location /usr/local/lib
